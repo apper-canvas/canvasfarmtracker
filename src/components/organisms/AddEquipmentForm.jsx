@@ -122,7 +122,6 @@ const [formData, setFormData] = useState({
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Purchase Cost ($)
-                </label>
 </label>
                 <Input
                   type="number"
@@ -164,7 +163,6 @@ const [formData, setFormData] = useState({
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Next Maintenance
-                </label>
 </label>
                 <Input
                   type="date"
