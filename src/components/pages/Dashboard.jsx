@@ -14,14 +14,16 @@ import { cropService } from "@/services/api/cropService";
 import { taskService } from "@/services/api/taskService";
 import { transactionService } from "@/services/api/transactionService";
 import { weatherService } from "@/services/api/weatherService";
+import { equipmentService } from "@/services/api/equipmentService";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     farms: [],
-    crops: [],
+crops: [],
     tasks: [],
+    equipment: [],
     recentTransactions: [],
     weather: null,
     summary: null
@@ -38,18 +40,20 @@ const Dashboard = () => {
       setLoading(true);
       setError("");
 
-      const [farms, crops, tasks, transactionSummary, weather] = await Promise.all([
+const [farms, crops, tasks, equipment, transactionSummary, weather] = await Promise.all([
         farmService.getAll(),
         cropService.getAll(),
         taskService.getUpcoming(7),
+        equipmentService.getAll(),
         transactionService.getSummary(),
         weatherService.getToday()
       ]);
 
       setData({
-        farms,
+farms,
         crops,
         tasks,
+        equipment,
         recentTransactions: transactionSummary.recentTransactions,
         weather,
         summary: transactionSummary
@@ -81,7 +85,8 @@ const Dashboard = () => {
   if (error) return <Error message={error} onRetry={loadDashboardData} />;
 
   const activeCrops = data.crops.filter(crop => crop.status !== "Harvested").length;
-  const pendingTasks = data.tasks.filter(task => !task.completed).length;
+const pendingTasks = data.tasks.filter(task => !task.completed).length;
+  const equipmentCount = data.equipment.length;
   const overdueTasks = data.tasks.filter(task => 
     !task.completed && new Date(task.dueDate) < new Date()
   ).length;
@@ -126,6 +131,13 @@ const Dashboard = () => {
           trend={overdueTasks > 0 ? "down" : "up"}
           trendValue={overdueTasks > 0 ? `${overdueTasks} overdue` : "On track"}
         />
+<StatsCard
+            title="Equipment"
+            value={equipmentCount}
+            icon="Settings"
+            trend="neutral"
+            onClick={() => navigate("/equipment")}
+          />
 <StatsCard
           title="This Month"
           value={`$${data.summary?.netProfit?.toFixed(0) || 0}`}
@@ -281,13 +293,21 @@ const Dashboard = () => {
       <Card className="p-6">
         <CardTitle className="mb-4">Quick Actions</CardTitle>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Button
+<Button
             variant="outline"
-onClick={() => navigate("/farms")}
+            onClick={() => navigate("/farms")}
             className="flex flex-col items-center space-y-2 h-20"
           >
             <ApperIcon name="MapPin" size={24} />
             <span>Add Farm</span>
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate("/equipment")}
+            className="flex flex-col items-center space-y-2 h-20"
+          >
+            <ApperIcon name="Settings" size={24} />
+            <span>Add Equipment</span>
           </Button>
           <Button
             variant="outline"

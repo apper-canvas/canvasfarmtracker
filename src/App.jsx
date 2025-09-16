@@ -8,6 +8,7 @@ import BottomNavigation from '@/components/organisms/BottomNavigation';
 import Dashboard from '@/components/pages/Dashboard';
 import Farms from '@/components/pages/Farms';
 import Crops from '@/components/pages/Crops';
+import Equipment from '@/components/pages/Equipment';
 import Tasks from '@/components/pages/Tasks';
 import Finances from '@/components/pages/Finances';
 import Weather from '@/components/pages/Weather';
@@ -141,7 +142,8 @@ function App() {
                   <Route path="/tasks" element={<Tasks />} />
                   <Route path="/finances" element={<Finances />} />
                   <Route path="/crops" element={<Crops />} />
-                  <Route path="/weather" element={<Weather />} />
+<Route path="/weather" element={<Weather />} />
+                  <Route path="/equipment" element={<Equipment />} />
                 </Routes>
               </main>
               <BottomNavigation />

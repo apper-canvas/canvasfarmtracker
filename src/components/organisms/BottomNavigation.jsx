@@ -12,6 +12,7 @@ const navItems = [
     { path: "/farms", icon: "MapPin", label: "Farms" },
     { path: "/crops", icon: "Sprout", label: "Crops" },
     { path: "/tasks", icon: "CheckSquare", label: "Tasks" },
+    { path: "/equipment", icon: "Settings", label: "Equipment" },
     { path: "/finances", icon: "DollarSign", label: "Finances" },
   ];
 

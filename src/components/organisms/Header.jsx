@@ -11,8 +11,9 @@ const getPageTitle = () => {
     switch (location.pathname) {
       case "/": return "Dashboard";
       case "/farms": return "Farms";
-      case "/crops": return "Crops";
+case "/crops": return "Crops";
       case "/tasks": return "Tasks";
+      case "/equipment": return "Equipment";
       case "/finances": return "Finances";
       case "/weather": return "Weather";
       default: return "FarmTracker";
@@ -22,9 +23,10 @@ const getPageTitle = () => {
 const getPageIcon = () => {
     switch (location.pathname) {
       case "/": return "BarChart3";
-      case "/farms": return "MapPin";
+case "/farms": return "MapPin";
       case "/crops": return "Sprout";
       case "/tasks": return "CheckSquare";
+      case "/equipment": return "Settings";
       case "/finances": return "DollarSign";
       case "/weather": return "Cloud";
       default: return "Leaf";
