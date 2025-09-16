@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/Card';
-import Button from '@/components/atoms/Button';
-import Input from '@/components/atoms/Input';
-import Select from '@/components/atoms/Select';
-import Textarea from '@/components/atoms/Textarea';
-import ApperIcon from '@/components/ApperIcon';
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card";
+import ApperIcon from "@/components/ApperIcon";
+import Equipment from "@/components/pages/Equipment";
+import toast from "react-hot-toast";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
+import Textarea from "@/components/atoms/Textarea";
 
 const EditEquipmentForm = ({ equipment, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
-    name: equipment.name || '',
-    type: equipment.type || 'Tractor',
-    condition: equipment.condition || 'Good',
-    purchaseDate: equipment.purchaseDate ? equipment.purchaseDate.split('T')[0] : '',
-    purchaseCost: equipment.purchaseCost || '',
-    maintenanceStatus: equipment.maintenanceStatus || 'Current',
-    lastMaintenance: equipment.lastMaintenance ? equipment.lastMaintenance.split('T')[0] : '',
-    nextMaintenance: equipment.nextMaintenance ? equipment.nextMaintenance.split('T')[0] : '',
-    notes: equipment.notes || ''
+    name: equipment?.name || '',
+    type: equipment?.type || 'Tractor',
+    condition: equipment?.condition || 'Good',
+    purchaseDate: equipment?.purchaseDate ? equipment.purchaseDate.split('T')[0] : '',
+    purchaseCost: equipment?.purchaseCost || '',
+    maintenanceStatus: equipment?.maintenanceStatus || 'Current',
+    lastMaintenance: equipment?.lastMaintenance ? equipment.lastMaintenance.split('T')[0] : '',
+    nextMaintenance: equipment?.nextMaintenance ? equipment.nextMaintenance.split('T')[0] : '',
+    notes: equipment?.notes || ''
   });
   const [loading, setLoading] = useState(false);
 
@@ -24,11 +26,16 @@ const EditEquipmentForm = ({ equipment, onSubmit, onCancel }) => {
   const conditions = ['Excellent', 'Good', 'Fair', 'Poor'];
   const maintenanceStatuses = ['Current', 'Due', 'Overdue'];
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.name.trim()) {
-      alert('Equipment name is required');
+    if (!formData.name?.trim()) {
+      toast.error('Equipment name is required');
+      return;
+    }
+    
+    if (!formData.purchaseCost || isNaN(parseFloat(formData.purchaseCost))) {
+      toast.error('Valid purchase cost is required');
       return;
     }
 

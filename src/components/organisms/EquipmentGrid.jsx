@@ -41,7 +41,7 @@ const EquipmentGrid = ({ equipment, onEdit, onDelete }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {equipment.map((item) => (
-        <Card key={item.Id} className="hover:scale-105 transform transition-all duration-300">
+<Card key={item.Id} className="hover:scale-105 transform transition-all duration-300">
           <CardHeader className="pb-3">
             <div className="flex items-start justify-between">
               <div className="flex items-center space-x-3">
@@ -64,7 +64,7 @@ const EquipmentGrid = ({ equipment, onEdit, onDelete }) => {
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => onDelete(item.Id)}
+onClick={() => onDelete(item.Id)}
                   className="text-red-500 hover:text-red-700"
                 >
                   <ApperIcon name="Trash2" size={14} />
@@ -90,7 +90,7 @@ const EquipmentGrid = ({ equipment, onEdit, onDelete }) => {
                 <span className="text-sm text-gray-600">Purchased:</span>
               </div>
               <span className="text-sm font-medium text-gray-700">
-                {format(new Date(item.purchaseDate), "MMM d, yyyy")}
+{item.purchaseDate ? format(new Date(item.purchaseDate), "MMM d, yyyy") : 'Not specified'}
               </span>
             </div>
 

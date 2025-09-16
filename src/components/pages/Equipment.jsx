@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/Card';
-import Button from '@/components/atoms/Button';
-import ApperIcon from '@/components/ApperIcon';
-import Loading from '@/components/ui/Loading';
-import Error from '@/components/ui/Error';
-import Empty from '@/components/ui/Empty';
-import EquipmentGrid from '@/components/organisms/EquipmentGrid';
-import AddEquipmentForm from '@/components/organisms/AddEquipmentForm';
-import EditEquipmentForm from '@/components/organisms/EditEquipmentForm';
-import { equipmentService } from '@/services/api/equipmentService';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card";
+import { equipmentService } from "@/services/api/equipmentService";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import EditEquipmentForm from "@/components/organisms/EditEquipmentForm";
+import AddEquipmentForm from "@/components/organisms/AddEquipmentForm";
+import EquipmentGrid from "@/components/organisms/EquipmentGrid";
+import Button from "@/components/atoms/Button";
+import Empty from "@/components/ui/Empty";
+import Loading from "@/components/ui/Loading";
+import Error from "@/components/ui/Error";
 
 const Equipment = () => {
   const [equipment, setEquipment] = useState([]);
@@ -22,28 +22,46 @@ const Equipment = () => {
   const equipmentTypes = ['All', 'Tractor', 'Harvester', 'Planter', 'Tillage', 'Irrigation', 'Sprayer', 'Hay Equipment'];
 
   useEffect(() => {
-    loadEquipment();
+loadEquipment();
   }, []);
 
-  const loadEquipment = async () => {
+const loadEquipment = async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await equipmentService.getAll();
-      setEquipment(data);
+      const response = await equipmentService.getAll();
+      
+      if (!response.success) {
+        console.error("Error loading equipment:", response.message);
+        setError(response.message);
+        toast.error("Failed to load equipment");
+        setEquipment([]);
+      } else if (!response.data || response.data.length === 0) {
+        setEquipment([]);
+      } else {
+setEquipment(response.data);
+      }
     } catch (error) {
       console.error("Error loading equipment:", error);
-      setError(error.message);
+      setError(error?.message || "Unknown error occurred");
       toast.error("Failed to load equipment");
+      setEquipment([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAddEquipment = async (equipmentData) => {
+const handleAddEquipment = async (equipmentData) => {
     try {
-      const newEquipment = await equipmentService.create(equipmentData);
-      setEquipment(prev => [...prev, newEquipment]);
+      const response = await equipmentService.create(equipmentData);
+      
+      if (!response.success) {
+        console.error("Error adding equipment:", response.message);
+        toast.error(response.message || "Failed to add equipment");
+        return;
+      }
+      
+      setEquipment(prev => [...prev, response.data]);
       setShowAddForm(false);
       toast.success("Equipment added successfully!");
     } catch (error) {
@@ -52,11 +70,18 @@ const Equipment = () => {
     }
   };
 
-  const handleEditEquipment = async (equipmentData) => {
+const handleEditEquipment = async (equipmentData) => {
     try {
-      const updatedEquipment = await equipmentService.update(editingEquipment.Id, equipmentData);
+      const response = await equipmentService.update(editingEquipment.Id, equipmentData);
+      
+      if (!response.success) {
+        console.error("Error updating equipment:", response.message);
+        toast.error(response.message || "Failed to update equipment");
+        return;
+      }
+      
       setEquipment(prev => prev.map(e => 
-        e.Id === editingEquipment.Id ? updatedEquipment : e
+        e.Id === editingEquipment.Id ? response.data : e
       ));
       setEditingEquipment(null);
       toast.success("Equipment updated successfully!");
@@ -66,13 +91,20 @@ const Equipment = () => {
     }
   };
 
-  const handleDeleteEquipment = async (equipmentId) => {
+const handleDeleteEquipment = async (equipmentId) => {
     if (!window.confirm("Are you sure you want to delete this equipment?")) {
       return;
     }
 
     try {
-      await equipmentService.delete(equipmentId);
+      const response = await equipmentService.delete(equipmentId);
+      
+      if (!response.success) {
+        console.error("Error deleting equipment:", response.message);
+        toast.error(response.message || "Failed to delete equipment");
+        return;
+      }
+      
       setEquipment(prev => prev.filter(e => e.Id !== equipmentId));
       toast.success("Equipment deleted successfully!");
     } catch (error) {
@@ -81,7 +113,7 @@ const Equipment = () => {
     }
   };
 
-  const filteredEquipment = filterType === 'All' 
+const filteredEquipment = filterType === 'All' 
     ? equipment 
     : equipment.filter(e => e.type === filterType);
 

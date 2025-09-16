@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/Card';
-import Button from '@/components/atoms/Button';
-import Input from '@/components/atoms/Input';
-import Select from '@/components/atoms/Select';
-import Textarea from '@/components/atoms/Textarea';
-import ApperIcon from '@/components/ApperIcon';
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card";
+import ApperIcon from "@/components/ApperIcon";
+import Equipment from "@/components/pages/Equipment";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
+import Textarea from "@/components/atoms/Textarea";
 
 const AddEquipmentForm = ({ onSubmit, onCancel }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     name: '',
     type: 'Tractor',
     condition: 'Good',
@@ -106,7 +107,7 @@ const AddEquipmentForm = ({ onSubmit, onCancel }) => {
                 </Select>
               </div>
 
-              <div>
+<div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Purchase Date
                 </label>
@@ -122,6 +123,7 @@ const AddEquipmentForm = ({ onSubmit, onCancel }) => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Purchase Cost ($)
                 </label>
+</label>
                 <Input
                   type="number"
                   name="purchaseCost"
@@ -147,7 +149,7 @@ const AddEquipmentForm = ({ onSubmit, onCancel }) => {
                 </Select>
               </div>
 
-              <div>
+<div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Last Maintenance
                 </label>
@@ -163,6 +165,7 @@ const AddEquipmentForm = ({ onSubmit, onCancel }) => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Next Maintenance
                 </label>
+</label>
                 <Input
                   type="date"
                   name="nextMaintenance"
@@ -170,7 +173,6 @@ const AddEquipmentForm = ({ onSubmit, onCancel }) => {
                   onChange={handleChange}
                 />
               </div>
-
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Notes
